@@ -1,0 +1,55 @@
+#global oracle database name:orcl
+                       password:cout14
+
+#Command Prompt:
+> sqlplus / as sysdba
+> select * from v$version;
+> select name, open_mode, cdb from v$database;
+> show pdbs;
+
+orcale sql developer:
+
+Enter user:'/' as sysdba
+SQL> select * from tab;
+                       clear sreen;
+
+SQL> create user scoot by identified azerty;
+SQL> grant unlimited tablespace to scoot;
+SQL> grant resource,connect,dba to scoot;
+SQL> exit;
+
+SQL> create table welcome(message varchar2(100));
+SQL> insert into welcome values('Welcome to Oracle 19c on windows 10');
+SQL> commit;
+SQL> select * from welcome;
+SQL> delete from welcome where message ='Welcome to Oracle 19c on windows 10';
+SQL> drop table welcome;
+================================================================================
+================================================================================
+SQL> ALTER SESSION SET CONTAINER = orclpdb;
+SQL> column name FORMAT a20;  
+SQL> SELECT name, open_mode FROM v$pdbs;
+SQL> ALTER PLUGGABLE DATABASE open;
+SQL> ALTER USER hr IDENTIFIED BY hr ACCOUNT UNLOCK;
+SQL> con hr/hr@orclpdb
+SQL> show user;
+
+---------------------------------------------------------------------------------
+Unlock HR User :
+
+>sqlplus / as sysdba
+
+SQL>select name, con_id from v$pdbs;
+SQL>alter session set container = ORDLPDB;
+SQL>alter pluggable database open;
+SQL>alter user hr identified by hr account unlock;
+SQL> grant unlimited tablespace to scoot;
+SQL> grant resource,connect,dba to scoot;
+
+####
+sys as sysdba
+cout14
+
+SQL> select name,con_id from v$pdbs;
+SQL> select name from v$active_services
+     where con_id=3;

@@ -1,0 +1,39 @@
+What are DBMS keys?
+
++ A DBMS Key is an attribute or a set of attributes which help you uniquely identify a record or a row of data in a relation(table).
+
+WHAY we need DBMS keys?
+
++ For identifying any row of data in a table uniquely. 
++ We can force identity of data and ensure integrity od data is maintained.
++ To establish relationship between tables and identifying relationship between tables.
++ Student Table:
+ | SID|  REG_ID     | NAME  | BRANCH|      EMAIL     |
+    1    CS-2019-37    John     CS    john@xyz.com
+    2    CS-2018-02    Adam     CS   adamcool@xyz.com
+    3    IT-2019-01    Adam     IT   adamnerd@xyz.com
+    4   ECE-2019-07    Elly    ECE   elly@xyz.com
+
++ Types of DBMS Keys:
+  -Super Key : It is nothing but a key which we just understood in the beginning.
+         keys: SID, REG_ID, EMAIL, SID+REG_ID,REG_ID+EMAIL, EMAIL+SID, SID+REG_ID+EMAIL.    
+               An attribute or a set attributes that can be used to identify row of data in a table is a super Key.
+      
+  -Candidate Key : It is nothing but minimal subset of super Key.
+             Keys: SID,REG_ID,EMAIL 
+                   If any proper subset of a super Key is a super Key then that key cannot be a candidate key. 
+
+  -Primary Key   : The candidate key chosen to uniquely identify each row of data in a table
+                   No 2 rows can have the same primary key value,primary key value cannot be NULL and every row must have a primary key.
+           Keys  : SID,REG_ID,EMAIL
+                 =====> if we choose REG_ID as primary key then SID and EMAIL will become Alternative key.            
+  -Alternative Key
+
+  -Foriegn Key   :It is an attribute in a table which is used to define its relationship with another table.
+                  Using foreign key helps in maintaining data integrity for tables in relationship.
+
+  -Composite & Compound Key : Any Key with more than one attribute is called Composite Key.
+   In the above example(SID,REG_ID),(REG_ID,EMAIL),(EMAIL,SID),(SID,REG_ID,EMAIL) all are composite keys.
+  
+  -Surrogate key :If a relation has no attribute which can be used to identify the data stored in it, then we create an attribute for this purpose.
+                  It adds no meaning to the data but serves the sole purpose of identifying rows uniquely in a table.

@@ -1,0 +1,376 @@
+password for the database superuser(postgres) : scott45
+port : 5432
+----------------------------------------------------------------------------------------------------------
+SQL:Stractured Query Languge
+
+C:CREATE
+R:READ
+U:UPADTE
+D:DELETE
+
+"Future users of large data banks mut be protected from having to know how the data is organized in the machine".
+E.F.Codd(1970)
+----------------------------------------------------------------------------------------------------------
+Database free vs commercial
+
+-Commercial: Oracle, IBM(DB2), Microsoft(sql server)
+-Store data locally 
+-Cloud computing :
+ -Cloud services:
+     -File storage
+     -Cloud Data Storage:
+              - Propriety
+              - Open Source:
+                -MySQL
+                -Postgresql
+                -MariaDB
+     - Analytics
+     - Artificial Intelligence
+     - Machine Learning
+----------------------------------------------------------------------------------------------------------------------------------------
+PostgreSQL is an advanced object-relational database management system that supports an extended subset of SQL standard, including transactions,
+foreign keys, subqueries, triggers, user-defined types and functions.
+
+Companies using PostgreSQL:
+
+-Netflix
+-Instgram
+-Spotify
+-Uber Technologies
+-InstaCart
+-reddit
+
+Why PostgreSQL?
+-Completely Open Source
+-Complete ACID Compliance
+-Comprehensive documentation and active discussion forums
+-PostgreSQL performance is utilized best in systems requiring execution of complex queries
+-PostgreSQL is best suited for Data Warehousing and data analysis applications that require fast read/write speeds
+-Supposed by all major cloud service providers, including Amazon,Google,&Microsoft.
+-----------------------------------------------------------------------------------------------------------------------------------------
+Logical Operators:
+-ALL
+-AND
+-BETWEEN
+-IN
+-LIKE
+-OR
+-IS NULL
+-----------------------------------------------------------------------------------------------------------------------------------------
+copy 'table_name' from 'path of file to copy\name_of_file.csv' delimiter ',' csv header; 
+
+or 
+
+copy 'table_name' from 'path of file to copy\copytext.txt' delimiter ',';
+----------------------------------------------------------------------------------------------------------------------------------------
+Database : earthquake 
+
+Table:erthquake: 
+
+create table public.erthquake
+(
+    arthquake_id integer,
+    occurred_on timestamp without time zone,
+    latitude numeric,
+    longitude numeric,
+    depth numeric,
+    magnitude numeric,
+    calculation_method character varying,
+    network_id character varying,
+    place character varying,
+    cause character varying
+);
+
+------------------------------------------------------------------------------------------------------------------------------------------
+select * from erthquake limit 1;
+select min(occurred_on), max(occurred_on) from erthquake ;
+select min(magnitude), max(magnitude) from erthquake;
+select cause from erthquake;
+select distinct cause from erthquake;
+
+---let's count how many quakes were the result of each cause
+select count(*) from erthquake where cause = 'earthquake';
+---Next, count the number of erathquakes due to nuclear explosions
+select count(*) from erthquake where cause = 'nuclear explosion';
+---How many events were caused by an explosion
+select count(*) from erthquake where cause = 'explosion';
+
+---Common problem these four rows should have a cause of "nuclear explosion" and not just "explosion"
+select * from erthquake where cause = 'explosion';
+
+----find the details about the most recent earthquake caused by "nuclear explosion" 
+select place, magnitude, occurred_on from erthquake where cause = 'nuclear explosion' order by occurred_on desc limit 1;
+
+----what were the 10 largest earthquakes from 1969-2018?
+select place, magnitude, occurred_on from erthquake where cause = 'nuclear explosion' order by magnitude desc limit 10;
+
+----how we can find a number of aftershocks?
+idea: find quakes with "Honshu" and "Japan" in the 'place' text & occurred within a week of the March 11 quake!
+select * from erthquake where place like '%Honshu%Japan%' and occurred_on between '2011-03-11' and '2011-03-18';
+select count(*) from erthquake where place like'%Honshu%Japan%' and occurred_on between '2011-03-11' and '2011-03-18';
+----------------------------------------------------------------------------------------------------------------------------------------
+Command AS:
+/* AS */
+select customer_id as "Serial Number", customer_name as name, age as customer_age from customer; --- an example ---
+----------------------------------------------------------------------------------------------------------------------------------------
+AVG function returns the average value of an expression.
+
+SELECT avg(age) AS"Average Customer Age" FROM customer;
+SELECT avg(sales * 0.10) AS"Average Commision Value" FROM sales;
+----------------------------------------------------------------------------------------------------------------------------------------
+Chitter will be an innovative cloud based platform that will disrupt the social network industry by using big data and machine tearning 
+to find a synergy between influencers and thought leaders.
+
+--INSERT
+
+The database behind Chitter will consist of several tables:"chitter_user", post, follower
+-chitter_user will have the following columns: user_id, username, encrypted_password, email, date_joined
+-post will have the following columns:post_id, user_id, post_text, posted_on
+-follower will have the following columns: user_id, follower_id
+
+iselect * from public.chitter_user;
+select count(*) from chitter_user;
+insert into chitter_user (user_id, username, encrypted_password, email, date_joined) 
+                         values (DEFAULT, 'firstuser', 'd63dc919e2dc30d2', 'fakemail@fakedomain.com', '2019-02-25');
+select * from chitter_user;
+
+insert into chitter_user (username, encrypted_password) values ('seconduser', '9a834yva9fn3493yn');
+select * from chitter_user;
+
+insert into post (user_id, post_text) values(1, 'Hello word!'),(1, 'Hello Solar System!');
+select * from post;
+
+delete  from post where user_id = 1 and post_text = 'Hello word!';
+delete from post where user_id = 1 and post_text = 'Hello Solar System!';
+insert into post (user_id, post_text) values (1, 'Hello word!');
+insert into post (user_id, post_text) values (1, 'Hello Solar System!');
+insert into post (post_id, posted_on) values (default, '2019-03-05');
+delete from post where posted_on = '2019-03-05';
+
+select * from post;
+insert into post (post_id, post_text) values (1, 'Hello word!');
+insert into post (post_id, post_text) values (2, 'Hello Solar System!');
+
+delete  from post where post_id=1 and post_text = '2019-03-05 20:56:19.59071';
+delete  from post where post_id=2 and post_text = '2019-03-05 20:56:19.59071';
+insert into post (post_id, posted_on) values (1, '2019-03-05 20:56:19.59071');
+insert into post (post_id, posted_on) values (2, '2019-03-05 20:56:19.59071');
+------------------------------------------------------------------------------------------------------------------------
+Database:User_secret
+Table: secret_user
+--UPDATE
+create table public.secret_user
+(
+user_id integer,
+first_name character varying,
+last_name character varying,
+code_name character varying,
+country character varying,
+organization character varying,
+salary integer,
+Knows_Kung_fu boolean
+
+);
+
+select * from secret_user;
+update secret_user set first_name='James' where user_id =1;
+select * from secret_user;
+
+update secret_user set code_name = 'Neo 2.0', salary =115000 where first_name='Jack' and last_name='Rayn';
+select * from secret_user order by user_id;
+
+update secret_user set salary=115000 where organization='MI6';
+select * from secret_user where organization='MI6';
+
+update secret_user set Knows_kung_fu=True where user_id in (5,6,7,8);
+select * from secret_user order by user_id;
+
+update secret_user set salary=1.1*salary;
+select * from secret_user order by user_id;
+
+select sum(salary) from secret_user;
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+Databse:songs
+Table:songs.csv //import form socratica
+--DELETE
+select * from songs;
+select count(*) from songs;
+select min(year_released), max(year_released) from songs;
+select distinct year_released from songs order by year_released ;
+
+select count(*) from songs where year_released=0; 
+delete from songs where year_released=0;
+select * from songs;
+select count(*) from songs where year_released=0;
+select min(tempo), max(tempo) from songs;
+select * from songs where tempo=0;
+select count(*) from songs where tempo=0;
+delete from songs where tempo=0;
+
+select count(*) from songs where tempo=0;
+select min(duration), max(duration) from songs ;
+
+select min(loudness), max(loudness) from songs ;
+select count(*) from songs where loudness>0;
+select * from songs where loudness > 0;
+delete from songs where loudness > 0;
+select min(loudness), max(loudness) from songs;
+
+select year_released, avg(tempo) from songs group by year_released order by year_released ;
+select year_released, round(avg(tempo)) from songs group by year_released order by year_released;
+-----------------------------------------------------------------------------------------------------------------------------
+INNER JOIN:
+compares each row of table1 with each row of table2 to find all pairs of rows which satisfy the join-predicate.When satisfied,
+column values for each matched pair of rows of A and B are combined into a result row.
+------------------------------------------------------------------------------------------------------------------------------
+select 
+a.order_line,
+a.product_id,
+a.customer_id,
+a.sales,
+b.customer_name,
+b.age
+
+from sales_2015 as a
+inner join customer_20_60 as b 
+on a.customer_id=b.customer_id
+order by customer_id; 
+------------------------------------------------------------------------------------------------------------------------------
+select a.order_line,
+     a.product_id,
+     a.customer_id,
+     a.sales,
+     b.customer_name,
+     b.age,
+     b.customer_id
+from sales_2015 as a
+full join customer_20_60 as b
+on a.customer_id=b.customer_id
+order by a.customer_id, b.customer_id;
+------------------------------------------------------------------------------------------------------------------------------
+CROSS JOIN:
+performs cross product between tow tables.
+connects each row in the left table with each row in the right table.
+------------------------------------------------------------------------------------------------------------------------------
+UNION operator is used to combine the result sets of 2 or more SELECT statements.It removes duplicate rows between the various
+SELECT statements. 
+/* not present in customer_20_60 table */
+/* present in both */
+/* not present in sales_2015 table */
+
+select customer_id from sales_2015
+union
+select customer_id from customer_20_60
+order by customer_id;
+------------------------------------------------------------------------------------------------------------------------------
+STRING_AGG concatenates input values into a string, separated by delimiter
+
+Take this example:
+SELECT 
+      order_id,
+      STRING_AGG(product_id,', ')
+FROM sales
+GROUP BY order_id; 
+------------------------------------------------------------------------------------------------------------------------------
+SETSEED:
+if we set the seed by calling the setseed function,, then the random funcion will return a repeatable sequence of random numbers
+that is derived from the seed.
+
+SETSEED(seed)
+
+Seed can have a value between 1.0 and -1.0,inclusive.
+
+select random(), random()*40+10, floor(random()*40)+10;
+select setseed(0.5);
+select random();
+select random();
+------------------------------------------------------------------------------------------------------------------------------
+TO_DATE function converts a string to a date
+exemple:
+
+SELECT TO_DATE('2020/01/15','YYYY/MM/DD');
+select to_date('15012020','DDMMYYYY');
+
+---convert a string to number---
+SELECT TO_NUMBER('2045.876','9999.999');
+SELECT TO_NUMBER('.0547218','.9999999');
+SELECT TO_NUMBER('$2,845.876','L9,999.999');
+------------------------------------------------------------------------------------------------------------------------------
+                                                  SOFT DELETE
+Soft deletion means you don't actually delete the record instead you are marking the record as deleted.
+
+                                                  HARD DELETE
+Hard deletion means data is physically deleted from the database table.
+------------------------------------------------------------------------------------------------------------------------------
+                        UPDATE
+Upadte customer set customer_name=(trim(upper(customer_name))
+       where(trim(upper(customer_name))<>customer_name
+
+Every updated row is actually a soft delete and an insert.So updating every row will increase the storage size of the table.
+
+                        CASE STATEMENT
+Instead you can use the case statements while creating such tables
+------------------------------------------------------------------------------------------------------------------------------
+SQL Joins Explained & Examples:
+
+select * from martian;
+select * from base;
+select * from visitor;
+select * from inventory;
+select * from supply;
+
+-- Create a Report of Martian names and their base
+select * from martian inner join base on martian.base_id=base.base_id;
+select first_name, last_name, base_name from martian inner join base on martian.base_id=base.base_id;
+select m.first_name, b.base_name,b.founded from martian as m inner join base as b on m.base_id=b.base_id;
+select m.first_name, b.base_id,b.base_name,b.founded from martian as m inner join base b on m.base_id=b.base_id;
+
+--- Mission: Generate Martian Reports
+--- Requirements: Data from two tables
+--- Technique: Use Joins
+--- Join used: INNER,LEFT,RIGHT,FULL
+/* visitor report Report details:Display name of each visitor Show name of visitor's host */
+
+select count(first_name) from visitor; --7
+select count(first_name) from martian; --13
+
+select v.first_name as visitor_fn, v.last_name as visitor_ln, 
+       m.first_name as martian_fn, m.last_name as martian_ln
+	  from visitor as v left join martian as m on v.host_id=m.martian_id;
+
+--- Super Report 
+--- Report Details:Display list of each Martin and the person they report to
+--- Join Method:"Self Join"
+select * from martian as m inner join martian as s on m.super_id=s.martian_id order by m.martian_id ;
+
+select m.first_name as fn, m.last_name as ln,
+       s.first_name as super_fn, s.last_name as super_ln
+from martian as m inner join martian as s on m.super_id=s.martian_id order by m.martian_id;
+
+--- Inventory report 
+--- Report Details: Inventory for base #1
+select * from inventory where base_id = 1;
+select s.supply_id, i.quantity, s.name, s.description from (select * from inventory where base_id = 1) as i  
+right join supply as s on i.supply_id=s.supply_id order by s.supply_id;
+
+--- No Host Report
+--- Report Details: List of visitors without host 
+                  --Martians available to do this Job
+select * from visitor as v full join martian as m on v.host_id=m.martian_id where m.martian_id is null or v.visitor_id is null ;
+
+select v.first_name as visitor_fn, v.last_name as visitor_ln,
+       m.first_name as martian_fn, m.last_name as martian_ln
+	   from visitor as v full join martian as m on v.host_id = martian_id where m.martian_id is null or visitor_id is null;
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+-----Merge----
+merge sample_target_table target using sample_source_table source on(target.studentID = source.studentID)
+when matched and target.studentName<>source.studentName or target.Marks<>source.Marks
+then
+update set target.studentName = source.studentName, target.marks = source.Marks
+when not matched by target then
+insert (studentID, studentName, Marks) values  (source.studentID,source.studentName,source.Marks)
+when not matched by source then
+delete;
+
+                         -------COUNT()---------
+select count(student_id), city from info_students group by city; 
+select student_id, student_name, count(city) from info_students group by grouping sets ((student_id, student_name, city),(student_id),(student_name),(city));
+select count(student_id), city from info_students group by city having count(student_id)=1 order by count(student_id) desc;
+
+select student_id, count(city) from info_students group by cube(student_id) order by student_id;
+select student_id, count(city) from info_students group by rollup (student_id);
+
+                         ------ORDER BY()-------
+create table offsetmarks (marks integer);
+insert into offsetmarks values ('65');
+
+select * from offsetmarks order by marks offset 2 rows ;
+select * from offsetmarks order by marks offset 3 rows fetch next 2 rows only;
+
+                        --------Into-------------
+select * into studentsBackup from info_students;
+select * into Punestudents from info_students where city ='Pane';
+select * from Punestudents;
+
+
+                         -------PivotTable-------
+create table supplierTable
+(
+supplier_id int NOT NULL,
+daysofManufacture int,
+cost int,
+customer_id int,
+parchase_id varchar(4000)
+);
+
+select * from supplierTable;
+
+select customer_id, avg(cost) as averagecostofcustomer from supplierTable group by customer_id; 
+
+select 'averagecostofcustomer' as cost_according_to_customers, [11], [22], [33]
+from (
+select customer_id, cost from supplierTable) as sourceTable
+PIVOT
+(
+avg(cost) for customer_id in([11], [22], [33])) as PivotTable;
+
+                         -----------create Table-----------
+create table 'table name' ( parameters )
+go
+insert into table name values ('',''   );
+inset into table name values ('',''    );
+
+go
+select * from table name;
+
